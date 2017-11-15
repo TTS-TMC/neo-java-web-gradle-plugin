@@ -23,7 +23,7 @@ public class PluginTest {
 		    BuildResult result = GradleRunner.create()
 		        .withProjectDir(testProjectDir.getRoot())
 		        .withPluginClasspath()
-		        .withArguments("installSdk", "--debug")
+		        .withArguments("installSdk", "--info")
 		        .build();
 		    assertThat(
 		      result.task(":" + "installSdk").getOutcome(),
