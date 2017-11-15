@@ -1,0 +1,48 @@
+
+plugins {
+    id 'java-library'
+    id 'java-gradle-plugin'
+    id 'eclipse'
+    id 'groovy'
+	id 'maven'
+}
+version = '0.0.1'
+group  = 'com.tts.gradle' 
+
+project.buildDir = 'target'
+
+repositories {
+    jcenter()
+}
+
+eclipse {
+    classpath {
+        downloadJavadoc = true
+    }
+  }
+  
+  dependencies {
+    api gradleApi()
+	testCompile group: 'junit', name: 'junit', version: '4.12'
+	api group: 'org.apache.ant', name: 'ant-compress', version: '1.5'
+	
+}
+//For whatever reason file always was put to build/...
+validateTaskProperties{
+    outputFile = "${buildDir}/reports/task-properties/report.txt"
+}
+
+gradlePlugin {
+  plugins {
+    yourPluginName {
+      id = 'scp-neo-plugin'
+      implementationClass = 'com.tts.gradle.plugin.NeoJavaWebPlugin'
+    }
+  }
+}
+test {
+    testLogging {
+        showStandardStreams = true
+    }
+}
+
