@@ -5,6 +5,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.tasks.OutputDirectory;
 import org.gradle.api.tasks.TaskExecutionException;
 
@@ -69,6 +70,12 @@ public class NeoJavaWebExtension {
 
 	public void setSourceFileLocation(String sourceFileLocation) {
 		this.sourceFileLocation = sourceFileLocation;
+	}
+	
+	public void validate(Task task) throws TaskExecutionException {
+		if (sdkVersion == null || sdkVersion.equals("")) {
+			throw new TaskExecutionException(task, new Throwable("Please provide a Sdk Version for Sap Neo Java Web Sdk in your build.gradle"));
+		}
 	}
 
 	@Override

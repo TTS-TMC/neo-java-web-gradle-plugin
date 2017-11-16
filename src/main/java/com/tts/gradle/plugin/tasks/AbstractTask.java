@@ -3,6 +3,7 @@ package com.tts.gradle.plugin.tasks;
 import java.io.File;
 
 import org.gradle.api.DefaultTask;
+import org.gradle.api.Task;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
@@ -27,5 +28,21 @@ public abstract class AbstractTask extends DefaultTask {
 	protected NeoJavaWebExtension getExtension() {
 		return getProject().getExtensions().findByType(NeoJavaWebExtension.class);
 	}
-
+	
+	protected void validate(Task task) {
+		getExtension().validate(task);
+	}
+	
+	protected String getNeoExecutable() {
+		StringBuilder builder = new StringBuilder(getExtension().getSdkLocation());
+		builder.append(File.separator);
+		builder.append("tools");
+		builder.append(File.separator);
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			builder.append("neo.bat");
+		} else {
+			builder.append("neo.sh");
+		}
+		return builder.toString();
+	}
 }

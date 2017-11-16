@@ -12,7 +12,7 @@ import org.gradle.internal.component.external.model.DefaultModuleComponentIdenti
 
 import com.tts.gradle.plugin.NeoJavaWebExtension;
 
-public class InstallSdk extends DefaultTask {
+public class InstallSdk extends AbstractTask {
 
 	/**
 	 * This method reflects a gradle Task, it will install the Sap Neo Sdk so we can
@@ -21,22 +21,12 @@ public class InstallSdk extends DefaultTask {
 	 */
 	@TaskAction
 	public void installSdk() {
-		NeoJavaWebExtension extension = getProject().getExtensions().findByType(NeoJavaWebExtension.class);
-		if (extension == null) {
-			getLogger().info("Creating new Extension");
-			extension = new NeoJavaWebExtension(getProject());
-		}
 
-		// TODO This part should go to the abstract class, but then the extension
-		// version isn't read and I don't know why
-		if (extension.getSdkVersion() == null || extension.getSdkVersion().equals("")) {
-			getLogger().error("No Sdk Version specified");
-			throw new TaskExecutionException(this,
-					new Throwable("Please specify a valid Sdk Version in your build file"));
-		}
+		super.validate(this);
+
 
 		ComponentIdentifier componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
-				"neo-java-web-sdk", extension.getSdkVersion());
+				"neo-java-web-sdk", getExtension().getSdkVersion());
 
 		Configuration config = getProject().getConfigurations().create("download");
 		config.setTransitive(false); // if required, is it?
@@ -50,7 +40,7 @@ public class InstallSdk extends DefaultTask {
 		File file = config.getSingleFile();
 		getLogger().debug("File: " + file.getAbsolutePath() + " downloaded successfully");
 
-		String buildDir = extension.getSdkLocation();
+		String buildDir = getExtension().getSdkLocation();
 		getLogger().info("BuildDir currently set to: " + buildDir);
 
 		File sdkDir = null;

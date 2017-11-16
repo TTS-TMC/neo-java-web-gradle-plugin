@@ -16,6 +16,8 @@ public class InstallLocal extends AbstractTask {
 	@TaskAction
 	public void installLocal() {
 		getLogger().info("Entering installLocal task class");
+		super.validate(this);
+		
 		if (!isSdkInstalled()) {
 			throw new TaskExecutionException(this,
 					new Throwable("Seems that the Sdk is not installed, consider running task installSdk"));
@@ -56,16 +58,5 @@ public class InstallLocal extends AbstractTask {
 		}
 	}
 
-	private String getNeoExecutable() {
-		StringBuilder builder = new StringBuilder(getExtension().getSdkLocation());
-		builder.append(File.separator);
-		builder.append("tools");
-		builder.append(File.separator);
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			builder.append("neo.bat");
-		} else {
-			builder.append("neo.sh");
-		}
-		return builder.toString();
-	}
+
 }

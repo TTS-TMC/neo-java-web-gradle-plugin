@@ -68,42 +68,4 @@ public class InstallLocalTest {
 		printWriter.flush();
 		printWriter.close();
 	}
-	
-	
-	
-	public static void main(String[] args) {
-		
-		List<String> commands = new ArrayList<>();
-		commands.add("sh");
-		commands.add("sh");
-		commands.add("sh");
-		commands.add("sh");
-		commands.add("sh");
-		ProcessBuilder builder = new ProcessBuilder("sh", "/home/mathias/neo-tom8/tools/neo.sh", "install-local",
-				"--location", "/home/mathias/tmp/server");
-		try {
-			Process p = builder.start();
-			p.waitFor();
-			String line;
-			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			while ((line = input.readLine()) != null) {
-				System.out.println(line);
-			}
-			input.close();
-			line = null;
-			input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			while ((line = input.readLine()) != null) {
-				System.out.println(line);
-			}
-			input.close();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
