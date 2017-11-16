@@ -1,5 +1,4 @@
 package com.tts.gradle.plugin.tasks;
-import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -51,8 +50,10 @@ public class InstallSdkTest {
 		File buildFile = testProjectDir.newFile("build.gradle");
 		PrintWriter printWriter = new PrintWriter(buildFile);
 		printWriter.println("plugins { id 'com.tts.scp-neo-plugin' version '0.0.2' } ");
-		printWriter.println("scpSettings { sdkVersion = '3.39.10' ");
-		printWriter.println("sdkLocation = 'test' }");
+		printWriter.println("scpSettings { ");
+		printWriter.println("sdkVersion = '3.39.10'");
+		printWriter.println("sdkLocation = \"${projectDir}"+ File.separator+ "test\"");
+		printWriter.println("}");
 		printWriter.println("repositories { mavenCentral()	}");
 		printWriter.flush();
 		printWriter.close();

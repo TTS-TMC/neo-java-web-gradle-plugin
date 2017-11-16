@@ -1,8 +1,6 @@
 package com.tts.gradle.plugin;
 
-import java.io.File;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.util.Map;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -11,15 +9,22 @@ import org.gradle.api.tasks.TaskExecutionException;
 
 public class NeoJavaWebExtension {
 
-	private String defaultSdkLocation = ".sdk";
-	private String defaultServerLocation = "server";
-
+	private final Project project;
+	
 	private String sdkLocation = ".sdk";
 	private String sdkVersion;
 	private String serverLocation = "server";
 	private String sourceFileLocation;
-	private final Project project;
-
+	private String account;
+	private String applicationName;
+	private String host;
+	private String user;
+	private String password;
+	private String runtime = "3";
+	private String runtime_version = "neo-java-web";
+    private Map<String, String> envVars;
+	//commandLine neo(), 'deploy', '--account', account, '--application', application, '--host', host, '--password', password, '--user', user, '--source', war.archivePath, '--ev', destinationName, '-V', '-Dspring.profiles.active=production', '--runtime-version', '3', '--runtime', 'neo-java-web'
+	
 	public NeoJavaWebExtension(Project project) {
 		this.project = project;
 		this.project.getLogger().info("Extension Created: " + this.toString());
@@ -37,7 +42,7 @@ public class NeoJavaWebExtension {
 		if (sdkLocation == null || sdkLocation.equals("")) {
 			throw new TaskExecutionException(null, new Throwable("sdkLocation is empty, please add it in your build.gradle"));
 		}
-		return project.getProjectDir().getAbsolutePath().concat(File.separator).concat(sdkLocation);
+		return sdkLocation;
 	}
 
 	public void setSdkLocation(String sdkLocation) {
@@ -47,7 +52,6 @@ public class NeoJavaWebExtension {
 	public String getSdkVersion() {
 		return sdkVersion;
 	}
-
 	public void setSdkVersion(String sdkVersion) {
 		this.sdkVersion = sdkVersion;
 	}
@@ -57,7 +61,7 @@ public class NeoJavaWebExtension {
 		if (serverLocation == null || serverLocation.equals("")) {
 			// TODO throw error
 		}
-		return new StringBuilder(getSdkLocation()).append(File.separator).append(serverLocation).toString();
+		return serverLocation;
 	}
 
 	public void setServerLocation(String serverLocation) {
@@ -80,10 +84,70 @@ public class NeoJavaWebExtension {
 
 	@Override
 	public String toString() {
-		return "NeoJavaWebExtension [defaultSdkLocation=" + defaultSdkLocation + ", defaultServerLocation="
-				+ defaultServerLocation + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
-				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", project="
-				+ project + "]";
+		return "NeoJavaWebExtension [project=" + project + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
+				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", account="
+				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user + ", password="
+				+ password + ", runtime=" + runtime + ", runtime_version=" + runtime_version + "]";
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRuntime() {
+		return runtime;
+	}
+
+	public void setRuntime(String runtime) {
+		this.runtime = runtime;
+	}
+
+	public String getRuntime_version() {
+		return runtime_version;
+	}
+
+	public void setRuntime_version(String runtime_version) {
+		this.runtime_version = runtime_version;
+	}
+
+	public Project getProject() {
+		return project;
 	}
 
 }

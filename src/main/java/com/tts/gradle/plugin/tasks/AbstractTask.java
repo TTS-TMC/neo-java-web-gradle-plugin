@@ -1,6 +1,7 @@
 package com.tts.gradle.plugin.tasks;
 
 import java.io.File;
+import java.util.List;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Task;
@@ -44,5 +45,9 @@ public abstract class AbstractTask extends DefaultTask {
 			builder.append("neo.sh");
 		}
 		return builder.toString();
+	}
+	
+	protected List<String> commandbuilder(){
+		return null;
 	}
 }
