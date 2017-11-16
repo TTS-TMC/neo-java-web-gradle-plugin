@@ -11,23 +11,6 @@ import com.tts.gradle.plugin.NeoJavaWebExtension;
 
 public abstract class AbstractTask extends DefaultTask {
 	
-	private NeoJavaWebExtension extension;
-	private ComponentIdentifier componentIdentifier;
-	
-	public AbstractTask() {
-
-		if (getExtension() == null) {
-			getLogger().info("Creating new Extension");
-			extension = new NeoJavaWebExtension(getProject());
-		}
-//		if (extension.getSdkVersion() == null || extension.getSdkVersion().equals("")) {
-//			getLogger().error("Extension Error: " + extension.toString());
-//			throw new TaskExecutionException(this, new Throwable("Please specify a valid Sdk Version in your build file"));
-//		}
-		componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
-                "neo-java-web-sdk", "");
-	}
-
 	/**
 	 * Tests if the neo sdk is installed
 	 * @return true if sdkLocation exists, is a directory and isn't empty
@@ -41,15 +24,7 @@ public abstract class AbstractTask extends DefaultTask {
 		return false;
 	}
 
-	public ComponentIdentifier getComponentIdentifier() {
-		return componentIdentifier;
-	}
-
-	public void setComponentIdentifier(ComponentIdentifier componentIdentifier) {
-		this.componentIdentifier = componentIdentifier;
-	}
-
-	public NeoJavaWebExtension getExtension() {
+	protected NeoJavaWebExtension getExtension() {
 		return getProject().getExtensions().findByType(NeoJavaWebExtension.class);
 	}
 

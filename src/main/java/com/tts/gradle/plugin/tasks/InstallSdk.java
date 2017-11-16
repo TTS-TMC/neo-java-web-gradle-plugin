@@ -3,6 +3,7 @@ package com.tts.gradle.plugin.tasks;
 import java.io.File;
 
 import org.apache.ant.compress.taskdefs.Unzip;
+import org.gradle.api.DefaultTask;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.tasks.TaskAction;
@@ -11,7 +12,7 @@ import org.gradle.internal.component.external.model.DefaultModuleComponentIdenti
 
 import com.tts.gradle.plugin.NeoJavaWebExtension;
 
-public class InstallSdk extends AbstractTask {
+public class InstallSdk extends DefaultTask {
 
 	/**
 	 * This method reflects a gradle Task, it will install the Sap Neo Sdk so we can
@@ -20,12 +21,11 @@ public class InstallSdk extends AbstractTask {
 	 */
 	@TaskAction
 	public void installSdk() {
-		// NeoJavaWebExtension extension =
-		// getProject().getExtensions().findByType(NeoJavaWebExtension.class);
-		// if (extension == null) {
-		// getLogger().info("Creating new Extension");
-		// extension = new NeoJavaWebExtension();
-		// }
+		NeoJavaWebExtension extension = getProject().getExtensions().findByType(NeoJavaWebExtension.class);
+		if (extension == null) {
+			getLogger().info("Creating new Extension");
+			extension = new NeoJavaWebExtension(getProject());
+		}
 
 		// TODO This part should go to the abstract class, but then the extension
 		// version isn't read and I don't know why
@@ -35,17 +35,18 @@ public class InstallSdk extends AbstractTask {
 					new Throwable("Please specify a valid Sdk Version in your build file"));
 		}
 
-		// ComponentIdentifier componentIdentifier = new
-		// DefaultModuleComponentIdentifier("com.sap.cloud",
-		// "neo-java-web-sdk", extension.getSdkVersion());
+		ComponentIdentifier componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
+				"neo-java-web-sdk", extension.getSdkVersion());
 
 		Configuration config = getProject().getConfigurations().create("download");
 		config.setTransitive(false); // if required, is it?
 
 		getLogger().info("Adding dependency: "
-				+ getComponentIdentifier().getDisplayName().concat(extension.getSdkVersion()).concat("@zip"));
+				+ componentIdentifier.getDisplayName().concat("@zip"));
+		
 		getProject().getDependencies().add(config.getName(),
-				getComponentIdentifier().getDisplayName().concat(extension.getSdkVersion()).concat("@zip"));
+				componentIdentifier.getDisplayName().concat("@zip"));
+		
 		File file = config.getSingleFile();
 		getLogger().debug("File: " + file.getAbsolutePath() + " downloaded successfully");
 
@@ -53,9 +54,14 @@ public class InstallSdk extends AbstractTask {
 		getLogger().info("BuildDir currently set to: " + buildDir);
 
 		File sdkDir = null;
+		
 		sdkDir = new File(buildDir);
 		boolean created = sdkDir.mkdir();
 		getLogger().info("Directory " + sdkDir.getAbsolutePath() + " was created: " + created);
+		if (!created) {
+			throw new TaskExecutionException(this,
+					new Throwable("Directory " + buildDir + " wasn't created, aborting.."));
+		}
 
 		getLogger().info("Extracting file to: " + buildDir);
 		unzip(file, sdkDir);
