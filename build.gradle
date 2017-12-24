@@ -22,7 +22,7 @@ plugins {
 }
 
 apply plugin: "com.gradle.plugin-publish"
-version = '0.0.2'
+version = '0.1.2'
 group  = 'com.tts' 
 
 project.buildDir = 'target'
@@ -41,6 +41,7 @@ eclipse {
     api gradleApi()
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	api group: 'org.apache.ant', name: 'ant-compress', version: '1.5'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
 	
 }
 //For whatever reason file always was put to build/...

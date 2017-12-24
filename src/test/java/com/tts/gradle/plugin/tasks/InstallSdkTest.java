@@ -17,7 +17,7 @@ public class InstallSdkTest {
 	@Rule
 	public final TemporaryFolder testProjectDir = new TemporaryFolder();
 
-	@Test
+	//@Test
 	public void testPositiveCustomLocation() throws Exception {
 		setUpPositiveCustomLocation();
 		BuildResult result = GradleRunner.create().withProjectDir(testProjectDir.getRoot()).withPluginClasspath()
@@ -31,7 +31,7 @@ public class InstallSdkTest {
 
 	}
 
-	@Test
+	//@Test
 	public void testNegativeCustomLocation() throws Exception {
 		setUpNegativeCustomLocation();
 		
