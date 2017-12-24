@@ -1,4 +1,18 @@
 
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.gradle.publish:plugin-publish-plugin:0.9.9"
+  }
+}
+
+
+
+
 plugins {
     id 'java-library'
     id 'java-gradle-plugin'
@@ -6,8 +20,10 @@ plugins {
     id 'groovy'
 	id 'maven'
 }
-version = '0.0.1'
-group  = 'com.tts.gradle' 
+
+apply plugin: "com.gradle.plugin-publish"
+version = '0.1.5'
+group  = 'com.tts' 
 
 project.buildDir = 'target'
 
@@ -25,6 +41,7 @@ eclipse {
     api gradleApi()
 	testCompile group: 'junit', name: 'junit', version: '4.12'
 	api group: 'org.apache.ant', name: 'ant-compress', version: '1.5'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '2.0.2-beta'
 	
 }
 //For whatever reason file always was put to build/...
@@ -34,12 +51,27 @@ validateTaskProperties{
 
 gradlePlugin {
   plugins {
-    yourPluginName {
-      id = 'scp-neo-plugin'
+    scpNeoPlugin {
+      id = 'com.tts.scp-neo-plugin'
       implementationClass = 'com.tts.gradle.plugin.NeoJavaWebPlugin'
     }
   }
 }
+
+pluginBundle {
+  website = 'http://www.gradle.org/'
+  vcsUrl = 'https://github.com/gradle/gradle'
+  description = 'Sap Cloud Platform Neo stack plugin for the Tomcat Sdk'
+  tags = ['Sap', 'Cloud Platform']
+
+  plugins {
+    greetingsPlugin {
+      id = 'com.tts.scp-neo-plugin'
+      displayName = 'Scp Neo Sdk Plugin'
+    }
+  }
+}
+
 test {
     testLogging {
         showStandardStreams = true

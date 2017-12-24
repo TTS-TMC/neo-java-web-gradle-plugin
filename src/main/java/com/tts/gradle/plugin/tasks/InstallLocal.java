@@ -1,39 +1,33 @@
 package com.tts.gradle.plugin.tasks;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.TaskExecutionException;
+
+import com.tts.gradle.plugin.CommandsAndParams;
 
 public class InstallLocal extends AbstractTask {
 
+
+
 	@TaskAction
 	public void installLocal() {
-		if (!isSdkInstalled()) {
-			throw new TaskExecutionException(this, new Throwable("Seems that the Sdk is not installed, consider running task installSdk"));
-		}
+		getLogger().info("Entering installLocal task class");
+
+
+		getLogger().info("Preparing command " + CommandsAndParams.COMMAND_INSTALL_LOCAL);
+		List<String> command = new ArrayList<>();
+
+		command.add(CommandsAndParams.COMMAND_INSTALL_LOCAL);
+		command.add(CommandsAndParams.PARAM_LOCATION);
+		command.add(getExtension().getServerLocation());
+		getLogger().info("Intstalling Server to: " + getExtension().getServerLocation() );
 		
-		String command = getNeoExecutable() + " install-local " + "--location " + getExtension().getServerLocation();
-		ProcessBuilder builder = new ProcessBuilder(command);
-		try {
-			Process p = builder.start();
-			Scanner s = new Scanner( p.getInputStream() );
-			System.out.println(s.nextLine());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		getLogger().info("Running command " + CommandsAndParams.COMMAND_INSTALL_LOCAL + " with params. " + command.toString());
+		cliRunner(command);
 	}
-	
-	private String getNeoExecutable() {
-		String neoPath = getExtension().getSdkLocation().concat(File.separator).concat("tools");
-		if (System.getProperty("os.name").startsWith("Windows")) {
-			neoPath = neoPath.concat(File.separator).concat("neo.bat");
-		}else {
-			neoPath = neoPath.concat(File.separator).concat("neo.sh");
-		}
-		return neoPath;
-	}
+
+
 }
