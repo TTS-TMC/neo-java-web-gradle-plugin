@@ -13,6 +13,7 @@ public class TestTask extends AbstractTask {
 	@TaskAction
 	private void pub() {
 		getLogger().info(getExtension().toString());
+		getLogger().info("USER from gradle user home: " + getExtension().getUser() );
 	}
 	
 	public static void main(String[] args) {

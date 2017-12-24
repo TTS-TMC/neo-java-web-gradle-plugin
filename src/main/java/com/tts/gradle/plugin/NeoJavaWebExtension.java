@@ -1,8 +1,13 @@
 package com.tts.gradle.plugin;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -97,8 +102,8 @@ public class NeoJavaWebExtension {
 	public String toString() {
 		return "NeoJavaWebExtension [project=" + project + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
 				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", account="
-				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user + ", password="
-				+ password + ", runtime=" + runtime + ", runtime_version=" + runtimeVersion + ", enviromentVariables="
+				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user + ", password=*****"
+				+ ", runtime=" + runtime + ", runtime_version=" + runtimeVersion + ", enviromentVariables="
 				+ enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
 	}
 
@@ -128,11 +133,22 @@ public class NeoJavaWebExtension {
 
 	public String getUser() {
 		if (user == null) {
+			project.getLogger().info("Searching for user..");
 			user = (String) project.findProperty("user");
-			if(user == null) {
-				File file = new File(project.getGradle().getGradleUserHomeDir().getAbsolutePath().concat("gradle.properties"));
-				
-			}
+//			if(user == null) {
+//				project.getLogger().info("Searching for user in GRADLE_USER_HOME..");
+//				File file = new File(project.getGradle().getGradleUserHomeDir().getAbsolutePath().concat("gradle.properties"));
+//				Properties properties = new Properties();
+//				try {
+//					InputStream inputStream = new FileInputStream(file);
+//					properties.load(inputStream);
+//					user = properties.getProperty("user");
+//					
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
 			
 		}
 		return user;
@@ -143,6 +159,10 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getPassword() {
+		if (password == null) {
+			project.getLogger().info("Searching for password..");
+			password = (String) project.findProperty("password");
+		}		
 		return password;
 	}
 
