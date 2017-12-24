@@ -21,6 +21,7 @@ plugins {
 	id 'maven'
     id 'org.ajoberstar.grgit' version '2.1.0'
     id 'org.ajoberstar.reckon' version '0.3.0'
+    id 'jacoco'
 }
 
 apply plugin: "com.gradle.plugin-publish"
