@@ -19,13 +19,22 @@ plugins {
     id 'eclipse'
     id 'groovy'
 	id 'maven'
+    id 'org.ajoberstar.grgit' version '2.1.0'
+    id 'org.ajoberstar.reckon' version '0.3.0'
 }
 
 apply plugin: "com.gradle.plugin-publish"
-version = '0.1.5'
+
+
+
+reckon {
+  normal = scopeFromProp()
+  preRelease = stageFromProp('milestone', 'rc', 'final')
+}
+
+project.version = reckon.reckonVersion()
 group  = 'com.tts' 
 
-project.buildDir = 'target'
 
 repositories {
     jcenter()

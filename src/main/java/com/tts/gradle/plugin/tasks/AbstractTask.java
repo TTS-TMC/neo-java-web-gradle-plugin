@@ -68,10 +68,10 @@ public abstract class AbstractTask extends DefaultTask {
 		commands.add(1, getNeoExecutable());
 		
 		ProcessBuilder builder = new ProcessBuilder(commands);
-		try {
+		try { 
 			getLogger().info("Processbuilder about to start for class " + getClass().getName());
 			Process p = builder.start();
-			p.waitFor();
+			//p.waitFor();
 			String line;
 			getLogger().info("Reading Processbuilder InputStream");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -86,7 +86,7 @@ public abstract class AbstractTask extends DefaultTask {
 				System.out.println(line);
 			}
 			input.close();
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

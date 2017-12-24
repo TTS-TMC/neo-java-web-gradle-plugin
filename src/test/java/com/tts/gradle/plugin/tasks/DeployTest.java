@@ -41,7 +41,7 @@ public class DeployTest {
 	private void setUpBuildFile() throws Exception {
 		File buildFile = testProjectDir.newFile("build.gradle");
 		PrintWriter printWriter = new PrintWriter(buildFile);
-		printWriter.println("plugins { id 'com.tts.scp-neo-plugin' version '0.0.2' } ");
+		printWriter.println("plugins { id 'com.tts.scp-neo-plugin' } ");
 		printWriter.println("scpSettings { ");
 		printWriter.println("sdkVersion = '3.39.10'");
 		printWriter.println("sdkLocation = \"${projectDir}"+ File.separator+ "test\"");
