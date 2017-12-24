@@ -1,8 +1,13 @@
 package com.tts.gradle.plugin;
 
 import java.io.File;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -11,33 +16,47 @@ import org.gradle.api.tasks.TaskExecutionException;
 
 public class NeoJavaWebExtension {
 
-	private String defaultSdkLocation = ".sdk";
-	private String defaultServerLocation = "server";
+	private final Project project;
 
 	private String sdkLocation = ".sdk";
 	private String sdkVersion;
 	private String serverLocation = "server";
 	private String sourceFileLocation;
-	private final Project project;
+	private String account;
+	private String applicationName;
+	private String host;
+	private String user;
+	private String password;
+	private String runtime = "neo-java-web";
+	private String runtimeVersion = "3";
+	private Map<String, String> enviromentVariables;
+	private List<String> jvmArgs;
+	private boolean delta;
+	
+
+	
+//	private final Property<Map> test;
 
 	public NeoJavaWebExtension(Project project) {
 		this.project = project;
-		this.project.getLogger().info("Extension Created: " + this.toString());
-
+		//this.project.getLogger().info("Extension Created: " + this.toString());
 	}
+	
 
 	/**
 	 * This method will return the given sdkLocation, in case it is null, we throw
-	 * an error, the returned location is always relative to projectDir
+	 * an error
 	 * 
-	 * @return location relativ to projectDir
+	 * @return location of the Sdk
+	 * @throws TaskExecutionException
 	 */
 	@OutputDirectory
-	public String getSdkLocation() {
+	public String getSdkLocation() throws TaskExecutionException {
 		if (sdkLocation == null || sdkLocation.equals("")) {
-			throw new TaskExecutionException(null, new Throwable("sdkLocation is empty, please add it in your build.gradle"));
+			throw new TaskExecutionException(null,
+					new Throwable("sdkLocation is empty, please add it in your build.gradle"));
 		}
-		return project.getProjectDir().getAbsolutePath().concat(File.separator).concat(sdkLocation);
+		return sdkLocation;
 	}
 
 	public void setSdkLocation(String sdkLocation) {
@@ -57,7 +76,7 @@ public class NeoJavaWebExtension {
 		if (serverLocation == null || serverLocation.equals("")) {
 			// TODO throw error
 		}
-		return new StringBuilder(getSdkLocation()).append(File.separator).append(serverLocation).toString();
+		return serverLocation;
 	}
 
 	public void setServerLocation(String serverLocation) {
@@ -71,19 +90,135 @@ public class NeoJavaWebExtension {
 	public void setSourceFileLocation(String sourceFileLocation) {
 		this.sourceFileLocation = sourceFileLocation;
 	}
-	
+
 	public void validate(Task task) throws TaskExecutionException {
 		if (sdkVersion == null || sdkVersion.equals("")) {
-			throw new TaskExecutionException(task, new Throwable("Please provide a Sdk Version for Sap Neo Java Web Sdk in your build.gradle"));
+			throw new TaskExecutionException(task,
+					new Throwable("Please provide a Sdk Version for Sap Neo Java Web Sdk in your build.gradle"));
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "NeoJavaWebExtension [defaultSdkLocation=" + defaultSdkLocation + ", defaultServerLocation="
-				+ defaultServerLocation + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
-				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", project="
-				+ project + "]";
+		return "NeoJavaWebExtension [project=" + project + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
+				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", account="
+				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user + ", password=*****"
+				+ ", runtime=" + runtime + ", runtime_version=" + runtimeVersion + ", enviromentVariables="
+				+ enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
 	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getApplicationName() {
+		return applicationName;
+	}
+
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
+
+	public String getHost() {
+		return host;
+	}
+
+	public void setHost(String host) {
+		this.host = host;
+	}
+
+	public String getUser() {
+		if (user == null) {
+			project.getLogger().info("Searching for user..");
+			user = (String) project.findProperty("user");
+//			if(user == null) {
+//				project.getLogger().info("Searching for user in GRADLE_USER_HOME..");
+//				File file = new File(project.getGradle().getGradleUserHomeDir().getAbsolutePath().concat("gradle.properties"));
+//				Properties properties = new Properties();
+//				try {
+//					InputStream inputStream = new FileInputStream(file);
+//					properties.load(inputStream);
+//					user = properties.getProperty("user");
+//					
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+			
+		}
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getPassword() {
+		if (password == null) {
+			project.getLogger().info("Searching for password..");
+			password = (String) project.findProperty("password");
+		}		
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRuntime() {
+		return runtime;
+	}
+
+	public void setRuntime(String runtime) {
+		this.runtime = runtime;
+	}
+
+	public String getRuntimeVersion() {
+		return runtimeVersion;
+	}
+
+	public void setRuntimeVersion(String runtime_version) {
+		this.runtimeVersion = runtime_version;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public Map<String, String> getEnviromentVariables() {
+		return enviromentVariables;
+	}
+
+
+	public void setEnviromentVariables(Map<String, String> enviromentVariables) {
+		this.enviromentVariables = enviromentVariables;
+	}
+
+
+	public boolean isDelta() {
+		return delta;
+	}
+
+
+	public void setDelta(boolean delta) {
+		this.delta = delta;
+	}
+
+
+	public List<String> getJvmArgs() {
+		return jvmArgs;
+	}
+
+
+	public void setJvmArgs(List<String> jvmArgs) {
+		this.jvmArgs = jvmArgs;
+	}
+
+
 
 }
