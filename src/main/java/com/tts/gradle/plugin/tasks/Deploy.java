@@ -1,6 +1,5 @@
 package com.tts.gradle.plugin.tasks;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -10,9 +9,8 @@ import org.gradle.api.tasks.TaskExecutionException;
 
 import com.tts.gradle.plugin.CommandsAndParams;
 
-public class Deploy extends AbstractTask{
+public class Deploy extends CommonTask {
 
-	private List<String> command = new ArrayList<>();
 	// commandLine neo(), 'deploy', '--account', account, '--application',
 	// application, '--host', host, '--password', password, '--user', user,
 	// '--source', war.archivePath, '--ev', destinationName, '-V',
@@ -21,60 +19,51 @@ public class Deploy extends AbstractTask{
 	@TaskAction
 	public void deploy() {
 		getLogger().info("Entering deploy task class");
-		command.add(CommandsAndParams.COMMAND_DEPLOY);
-		command.add(CommandsAndParams.PARAM_ACCOUNT);
-		command.add(getExtension().getAccount()); 	
-		command.add(CommandsAndParams.PARAM_APPLICATION);
-		command.add(getExtension().getApplicationName());
-		command.add(CommandsAndParams.PARAM_HOST);
-		command.add(getExtension().getHost());
-		command.add(CommandsAndParams.PARAM_USER);
-		command.add(getExtension().getUser());
-		command.add(CommandsAndParams.PARAM_PASSWORD);
-		command.add(getExtension().getPassword());
-		command.add(CommandsAndParams.PARAM_SOURCE);
-		command.add(getExtension().getSourceFileLocation());
-		command.add(CommandsAndParams.PARAM_RUNTIME_VERSION);
-		command.add(getExtension().getRuntimeVersion());
-		command.add(CommandsAndParams.PARAM_RUNTIME);
-		command.add(getExtension().getRuntime());
-		
+		List<String> commands = null;
+		try {
+			commands = super.baseCommandlineArguments();
+			commands.add(0, CommandsAndParams.COMMAND_DEPLOY);
+			
+			commands.add(CommandsAndParams.PARAM_SOURCE);
+			commands.add(getExtension().getSourceFileLocation());
+			commands.add(CommandsAndParams.PARAM_RUNTIME_VERSION);
+			commands.add(getExtension().getRuntimeVersion());
+			commands.add(CommandsAndParams.PARAM_RUNTIME);
+			commands.add(getExtension().getRuntime());
 
-		//Validation that all required properties are set
-		boolean b = command.stream().noneMatch(s -> s == null || s.equals(""));
-		if (!b) {
-			throw new TaskExecutionException(this,
-					new Throwable("Seems that not all required properties are set, please check your gradle build file"));
+		} catch (Throwable e) {
+			throw new TaskExecutionException(this, e);
 		}
-		
-		//Now we add optional parameters
+
+		// Now we add optional parameters
 		if (getExtension().getEnviromentVariables() != null && !getExtension().getEnviromentVariables().isEmpty()) {
 			getLogger().info("Adding enviroment Variables");
-			Set<Entry<String,String>> set = getExtension().getEnviromentVariables().entrySet();
+			Set<Entry<String, String>> set = getExtension().getEnviromentVariables().entrySet();
 			for (Entry<String, String> entry : set) {
-				command.add(CommandsAndParams.PARAM_ENV_VARS);
-				command.add(entry.getKey() + "=" + entry.getValue());
+				commands.add(CommandsAndParams.PARAM_ENV_VARS);
+				commands.add(entry.getKey() + "=" + entry.getValue());
 			}
-			
+
 		}
-		
-		//jvm arguments
+
+		// jvm arguments
 		if (getExtension().getJvmArgs() != null && !getExtension().getJvmArgs().isEmpty()) {
 			getLogger().info("Adding jvm args");
 			for (String jvmArg : getExtension().getJvmArgs()) {
-				command.add(CommandsAndParams.PARAM_JVM_ARGS);
-				command.add(jvmArg);
+				commands.add(CommandsAndParams.PARAM_JVM_ARGS);
+				commands.add(jvmArg);
 			}
 		}
 		// Delta Deploy
 		if (getExtension().isDelta()) {
 			getLogger().info("Adding delta deploy");
-			command.add(CommandsAndParams.PARAM_DELTA);
+			commands.add(CommandsAndParams.PARAM_DELTA);
 		}
 		
-		getLogger().info("Running command " + CommandsAndParams.COMMAND_DEPLOY + " with params. " + command.toString());
-		cliRunner(command);
-		
-		
+		//FIXME password is visible
+		getLogger()
+				.info("Running command " + CommandsAndParams.COMMAND_DEPLOY + " with params. " + commands.toString());
+		cliRunner(commands);
+
 	}
 }

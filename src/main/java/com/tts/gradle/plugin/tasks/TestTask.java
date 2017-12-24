@@ -5,15 +5,20 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.api.tasks.TaskExecutionException;
 
-public class TestTask extends AbstractTask {
+public class TestTask extends CommonTask {
 	
 	
 	
 	@TaskAction
 	private void pub() {
 		getLogger().info(getExtension().toString());
-		getLogger().info("USER from gradle user home: " + getExtension().getUser() );
+		try {
+			getLogger().info("USER from gradle user home: " + getExtension().getUser() );
+		} catch (Throwable e) {
+			throw new TaskExecutionException(this, e);
+		}
 	}
 	
 	public static void main(String[] args) {
