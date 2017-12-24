@@ -1,13 +1,7 @@
 package com.tts.gradle.plugin;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import org.gradle.api.Project;
 import org.gradle.api.Task;
@@ -35,11 +29,9 @@ public class NeoJavaWebExtension {
 	
 
 	
-//	private final Property<Map> test;
 
 	public NeoJavaWebExtension(Project project) {
 		this.project = project;
-		//this.project.getLogger().info("Extension Created: " + this.toString());
 	}
 	
 
@@ -52,9 +44,9 @@ public class NeoJavaWebExtension {
 	 */
 	@OutputDirectory
 	public String getSdkLocation() throws TaskExecutionException {
-		if (sdkLocation == null || sdkLocation.equals("")) {
+		if (sdkLocation == null || sdkLocation.isEmpty()) {
 			throw new TaskExecutionException(null,
-					new Throwable("sdkLocation is empty, please add it in your build.gradle"));
+					new Throwable("sdkLocation is empty, please check your gradle build file"));
 		}
 		return sdkLocation;
 	}
@@ -63,18 +55,21 @@ public class NeoJavaWebExtension {
 		this.sdkLocation = sdkLocation;
 	}
 
-	public String getSdkVersion() {
+	public String getSdkVersion() throws Throwable {
+		if (sdkVersion == null || sdkVersion.isEmpty()) {
+			throw new Throwable("sdkVersion can't be empty, please check your gradle build file");
+	}
 		return sdkVersion;
 	}
-
+	
 	public void setSdkVersion(String sdkVersion) {
 		this.sdkVersion = sdkVersion;
 	}
 
 	@OutputDirectory
-	public String getServerLocation() {
-		if (serverLocation == null || serverLocation.equals("")) {
-			// TODO throw error
+	public String getServerLocation() throws Throwable {
+		if (serverLocation == null || serverLocation.isEmpty()) {
+				throw new Throwable("serverLocation can't be empty, please check your gradle build file");
 		}
 		return serverLocation;
 	}
@@ -83,7 +78,10 @@ public class NeoJavaWebExtension {
 		this.serverLocation = serverLocation;
 	}
 
-	public String getSourceFileLocation() {
+	public String getSourceFileLocation() throws Throwable {
+		if (sourceFileLocation == null || sourceFileLocation.isEmpty()) {
+			throw new Throwable("sourceFileLocation can't be empty, please check your gradle build file");
+		}
 		return sourceFileLocation;
 	}
 
@@ -107,7 +105,10 @@ public class NeoJavaWebExtension {
 				+ enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
 	}
 
-	public String getAccount() {
+	public String getAccount() throws Throwable {
+		if (account == null || account.isEmpty()) {
+			throw new Throwable("account can't be empty, please check your gradle build file");
+		}
 		return account;
 	}
 
@@ -115,7 +116,10 @@ public class NeoJavaWebExtension {
 		this.account = account;
 	}
 
-	public String getApplicationName() {
+	public String getApplicationName() throws Throwable {
+		if (applicationName == null || applicationName.isEmpty()) {
+			throw new Throwable("applicationName can't be empty, please check your gradle build file");
+		}
 		return applicationName;
 	}
 
@@ -123,7 +127,10 @@ public class NeoJavaWebExtension {
 		this.applicationName = applicationName;
 	}
 
-	public String getHost() {
+	public String getHost() throws Throwable {
+		if (host == null || host.isEmpty()) {
+			throw new Throwable("host can't be empty, please check your gradle build file");
+		}
 		return host;
 	}
 
@@ -131,25 +138,13 @@ public class NeoJavaWebExtension {
 		this.host = host;
 	}
 
-	public String getUser() {
+	public String getUser() throws Throwable {
 		if (user == null) {
 			project.getLogger().info("Searching for user..");
 			user = (String) project.findProperty("user");
-//			if(user == null) {
-//				project.getLogger().info("Searching for user in GRADLE_USER_HOME..");
-//				File file = new File(project.getGradle().getGradleUserHomeDir().getAbsolutePath().concat("gradle.properties"));
-//				Properties properties = new Properties();
-//				try {
-//					InputStream inputStream = new FileInputStream(file);
-//					properties.load(inputStream);
-//					user = properties.getProperty("user");
-//					
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//			}
-			
+			if (user == null || user.isEmpty()) {
+				throw new Throwable("user can't be empty, please check your gradle build file");
+			}
 		}
 		return user;
 	}
@@ -158,10 +153,13 @@ public class NeoJavaWebExtension {
 		this.user = user;
 	}
 
-	public String getPassword() {
+	public String getPassword() throws Throwable {
 		if (password == null) {
 			project.getLogger().info("Searching for password..");
 			password = (String) project.findProperty("password");
+			if (password == null || password.isEmpty()) {
+				throw new Throwable("password can't be empty, please check your gradle build file");
+			}
 		}		
 		return password;
 	}

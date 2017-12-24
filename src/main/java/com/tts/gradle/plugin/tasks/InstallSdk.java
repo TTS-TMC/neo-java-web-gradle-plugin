@@ -3,16 +3,13 @@ package com.tts.gradle.plugin.tasks;
 import java.io.File;
 
 import org.apache.ant.compress.taskdefs.Unzip;
-import org.gradle.api.DefaultTask;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.component.ComponentIdentifier;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskExecutionException;
 import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
 
-import com.tts.gradle.plugin.NeoJavaWebExtension;
-
-public class InstallSdk extends AbstractTask {
+public class InstallSdk extends CommonTask {
 
 	/**
 	 * This method reflects a gradle Task, it will install the Sap Neo Sdk so we can
@@ -25,8 +22,13 @@ public class InstallSdk extends AbstractTask {
 		super.validate(this);
 
 
-		ComponentIdentifier componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
-				"neo-java-web-sdk", getExtension().getSdkVersion());
+		ComponentIdentifier componentIdentifier;
+		try {
+			componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
+					"neo-java-web-sdk", getExtension().getSdkVersion());
+		} catch (Throwable e) {
+			throw new TaskExecutionException(this, e);
+		}
 
 		Configuration config = getProject().getConfigurations().create("download");
 		config.setTransitive(false); // if required, is it?
