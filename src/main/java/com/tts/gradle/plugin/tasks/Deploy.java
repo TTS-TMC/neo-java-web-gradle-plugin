@@ -11,18 +11,12 @@ import com.tts.gradle.plugin.CommandsAndParams;
 
 public class Deploy extends CommonTask {
 
-	// commandLine neo(), 'deploy', '--account', account, '--application',
-	// application, '--host', host, '--password', password, '--user', user,
-	// '--source', war.archivePath, '--ev', destinationName, '-V',
-	// '-Dspring.profiles.active=production', '--runtime-version', '3', '--runtime',
-	// 'neo-java-web'
 	@TaskAction
 	public void deploy() {
 		getLogger().info("Entering deploy task class");
 		List<String> commands = null;
 		try {
-			commands = super.baseCommandlineArguments();
-			commands.add(0, CommandsAndParams.COMMAND_DEPLOY);
+			commands = super.baseCommandlineArguments(CommandsAndParams.COMMAND_DEPLOY);
 			
 			commands.add(CommandsAndParams.PARAM_SOURCE);
 			commands.add(getExtension().getSourceFileLocation());

@@ -26,14 +26,10 @@ public class NeoJavaWebExtension {
 	private Map<String, String> enviromentVariables;
 	private List<String> jvmArgs;
 	private boolean delta;
-	
-
-	
 
 	public NeoJavaWebExtension(Project project) {
 		this.project = project;
 	}
-	
 
 	/**
 	 * This method will return the given sdkLocation, in case it is null, we throw
@@ -43,10 +39,9 @@ public class NeoJavaWebExtension {
 	 * @throws TaskExecutionException
 	 */
 	@OutputDirectory
-	public String getSdkLocation() throws TaskExecutionException {
+	public String getSdkLocation() throws Throwable {
 		if (sdkLocation == null || sdkLocation.isEmpty()) {
-			throw new TaskExecutionException(null,
-					new Throwable("sdkLocation is empty, please check your gradle build file"));
+			new Throwable("sdkLocation is empty, please check your gradle build file");
 		}
 		return sdkLocation;
 	}
@@ -58,10 +53,10 @@ public class NeoJavaWebExtension {
 	public String getSdkVersion() throws Throwable {
 		if (sdkVersion == null || sdkVersion.isEmpty()) {
 			throw new Throwable("sdkVersion can't be empty, please check your gradle build file");
-	}
+		}
 		return sdkVersion;
 	}
-	
+
 	public void setSdkVersion(String sdkVersion) {
 		this.sdkVersion = sdkVersion;
 	}
@@ -69,7 +64,7 @@ public class NeoJavaWebExtension {
 	@OutputDirectory
 	public String getServerLocation() throws Throwable {
 		if (serverLocation == null || serverLocation.isEmpty()) {
-				throw new Throwable("serverLocation can't be empty, please check your gradle build file");
+			throw new Throwable("serverLocation can't be empty, please check your gradle build file");
 		}
 		return serverLocation;
 	}
@@ -89,6 +84,7 @@ public class NeoJavaWebExtension {
 		this.sourceFileLocation = sourceFileLocation;
 	}
 
+	@Deprecated
 	public void validate(Task task) throws TaskExecutionException {
 		if (sdkVersion == null || sdkVersion.equals("")) {
 			throw new TaskExecutionException(task,
@@ -100,9 +96,9 @@ public class NeoJavaWebExtension {
 	public String toString() {
 		return "NeoJavaWebExtension [project=" + project + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
 				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", account="
-				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user + ", password=*****"
-				+ ", runtime=" + runtime + ", runtime_version=" + runtimeVersion + ", enviromentVariables="
-				+ enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
+				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user
+				+ ", password=*****" + ", runtime=" + runtime + ", runtime_version=" + runtimeVersion
+				+ ", enviromentVariables=" + enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
 	}
 
 	public String getAccount() throws Throwable {
@@ -160,7 +156,7 @@ public class NeoJavaWebExtension {
 			if (password == null || password.isEmpty()) {
 				throw new Throwable("password can't be empty, please check your gradle build file");
 			}
-		}		
+		}
 		return password;
 	}
 
@@ -192,31 +188,24 @@ public class NeoJavaWebExtension {
 		return enviromentVariables;
 	}
 
-
 	public void setEnviromentVariables(Map<String, String> enviromentVariables) {
 		this.enviromentVariables = enviromentVariables;
 	}
-
 
 	public boolean isDelta() {
 		return delta;
 	}
 
-
 	public void setDelta(boolean delta) {
 		this.delta = delta;
 	}
-
 
 	public List<String> getJvmArgs() {
 		return jvmArgs;
 	}
 
-
 	public void setJvmArgs(List<String> jvmArgs) {
 		this.jvmArgs = jvmArgs;
 	}
-
-
 
 }

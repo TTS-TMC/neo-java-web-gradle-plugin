@@ -19,13 +19,14 @@ public class InstallSdk extends CommonTask {
 	@TaskAction
 	public void installSdk() {
 
-		super.validate(this);
-
-
 		ComponentIdentifier componentIdentifier;
+		String buildDir;
 		try {
 			componentIdentifier = new DefaultModuleComponentIdentifier("com.sap.cloud",
 					"neo-java-web-sdk", getExtension().getSdkVersion());
+			
+			buildDir = getExtension().getSdkLocation();
+			getLogger().info("BuildDir currently set to: " + buildDir);
 		} catch (Throwable e) {
 			throw new TaskExecutionException(this, e);
 		}
@@ -42,8 +43,6 @@ public class InstallSdk extends CommonTask {
 		File file = config.getSingleFile();
 		getLogger().debug("File: " + file.getAbsolutePath() + " downloaded successfully");
 
-		String buildDir = getExtension().getSdkLocation();
-		getLogger().info("BuildDir currently set to: " + buildDir);
 
 		File sdkDir = null;
 		
