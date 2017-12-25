@@ -18,4 +18,5 @@ public class CommandsAndParams {
 	public static final String PARAM_DELTA = "--delta";
 	public static final String PARAM_ENV_VARS = "--ev";
 	public static final String PARAM_JVM_ARGS = "--vm-arguments";
+	public static final String COMMAND_RESTART = "restart";
 }

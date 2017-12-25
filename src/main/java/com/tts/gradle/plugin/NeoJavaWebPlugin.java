@@ -6,7 +6,7 @@ import org.gradle.api.Task;
 import com.tts.gradle.plugin.tasks.Deploy;
 import com.tts.gradle.plugin.tasks.InstallLocal;
 import com.tts.gradle.plugin.tasks.InstallSdk;
-import com.tts.gradle.plugin.tasks.StartStopRestart;
+import com.tts.gradle.plugin.tasks.Start;
 import com.tts.gradle.plugin.tasks.TestTask;
 
 public class NeoJavaWebPlugin implements Plugin<Project> {
@@ -32,15 +32,15 @@ public class NeoJavaWebPlugin implements Plugin<Project> {
         info.setDescription("Just a test Task");
         info.setGroup("Neo Sdk Plugin");
         
-        Task start = project.getTasks().create("start", StartStopRestart.class);
+        Task start = project.getTasks().create("start", Start.class);
         start.setDescription("Starts the application");
         start.setGroup("Neo Sdk Plugin");
         
-        Task stop = project.getTasks().create("stop", StartStopRestart.class);
+        Task stop = project.getTasks().create("stop", Start.class);
         stop.setDescription("Stops the application");
         stop.setGroup("Neo Sdk Plugin");
         
-        Task restart = project.getTasks().create("restart", StartStopRestart.class);
+        Task restart = project.getTasks().create("restart", Start.class);
         restart.setDescription("Restarts the application");
         restart.setGroup("Neo Sdk Plugin");
         
