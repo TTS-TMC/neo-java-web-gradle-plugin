@@ -4,15 +4,62 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Task;
 import org.gradle.api.tasks.TaskExecutionException;
 
+import com.tts.gradle.plugin.CommandsAndParams;
 import com.tts.gradle.plugin.NeoJavaWebExtension;
 
-public abstract class AbstractTask extends DefaultTask {
+
+/**
+ * This class represents the most commonly used Task with attributes.
+ * Standard mandatory attributes are normally:
+ *<pre>Required
+		-a, --account	Subaccount name
+		Type: string (up to 30 characters; lowercase letters and numbers, starting with a letter)
+		-b, --application	Application name
+		Type: string (up to 30 characters; lowercase letters and numbers, starting with a letter)
+		-h, --host	Enter a region host.
+		Type: URL, for acceptable values see Regions.
+		-p, --password	To protect your password, enter it only when prompted by the console client and not explicitly as a parameter in the properties file or the command line.
+		Type: string
+		-u, --user	Use your email, SAP ID or user name
+		Type: string
+		</pre>
+ * So this class takes care of building the basic commandline runner and verifying it. This clas is ment to be 
+ * subclassed for further task specific attributes/actions 
+ * @author mathias maerker
+ *
+ */
+public class CommonTask extends DefaultTask {
+	
+	/**
+	 * builds the default arguments for te neo cli. please be aware that if you call this method in a subclass 
+	 * at index 0 you have to insert the actual command
+	 * @return the default cli arguments
+	 * @throws Throwable if a mandatory property is missing
+	 */
+	protected List<String> baseCommandlineArguments() throws Throwable {
+		getLogger().info("Start building default commandline Arguments..");
+		List<String> commands = new ArrayList<>();
+		
+		commands.add(CommandsAndParams.PARAM_ACCOUNT);
+		commands.add(getExtension().getAccount()); 	
+		commands.add(CommandsAndParams.PARAM_APPLICATION);
+		commands.add(getExtension().getApplicationName());
+		commands.add(CommandsAndParams.PARAM_HOST);
+		commands.add(getExtension().getHost());
+		commands.add(CommandsAndParams.PARAM_USER);
+		commands.add(getExtension().getUser());
+		commands.add(CommandsAndParams.PARAM_PASSWORD);
+		commands.add(getExtension().getPassword());
+		
+		return commands;
+	}
 	
 	/**
 	 * Tests if the neo sdk is installed

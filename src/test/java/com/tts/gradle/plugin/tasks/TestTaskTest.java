@@ -35,6 +35,7 @@ public class TestTaskTest {
 		printWriter.println("plugins { id 'com.tts.scp-neo-plugin' version '0.0.2' } ");
 		printWriter.println("scpSettings { ");
 		printWriter.println("sdkVersion = '3.39.10'");
+		printWriter.println("user = '3.39.10'");
 		printWriter.println("enviromentVariables = [test: 'test']");
 		printWriter.println("}");
 		printWriter.println("repositories { mavenCentral()	}");

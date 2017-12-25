@@ -1,6 +1,5 @@
 package com.tts.gradle.plugin.tasks;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.gradle.api.tasks.TaskAction;
@@ -8,9 +7,8 @@ import org.gradle.api.tasks.TaskExecutionException;
 
 import com.tts.gradle.plugin.CommandsAndParams;
 
-public class StartStopRestart extends AbstractTask{
+public class StartStopRestart extends CommonTask{
 
-	private List<String> command = new ArrayList<>();
 	
 	/**
 	 * 
@@ -27,31 +25,21 @@ public class StartStopRestart extends AbstractTask{
 		Type: string
 	 */
 	
-	//TODO implement --synchronous and think about --application-process-id
+	//TODO implement --synchronous
 	@TaskAction
 	public void start() {
 		getLogger().info("Entering Start task..");
-		command.add(CommandsAndParams.COMMAND_STOP);
-		command.add(CommandsAndParams.PARAM_ACCOUNT);
-		command.add(getExtension().getAccount()); 	
-		command.add(CommandsAndParams.PARAM_APPLICATION);
-		command.add(getExtension().getApplicationName());
-		command.add(CommandsAndParams.PARAM_HOST);
-		command.add(getExtension().getHost());
-		command.add(CommandsAndParams.PARAM_USER);
-		command.add(getExtension().getUser());
-		command.add(CommandsAndParams.PARAM_PASSWORD);
-		command.add(getExtension().getPassword());
 		
-		//Validation that all required properties are set
-		boolean b = command.stream().noneMatch(s -> s == null || s.equals(""));
-		if (!b) {
-			throw new TaskExecutionException(this,
-					new Throwable("Seems that not all required properties are set, please check your gradle build file"));
+		List<String> command;
+		try {
+			command = super.baseCommandlineArguments();
+		} catch (Throwable e) {
+			throw new TaskExecutionException(this, e);
 		}
 		
+		command.add(0, CommandsAndParams.COMMAND_START);
 		
-		getLogger().info("Running command " + CommandsAndParams.COMMAND_STOP + " with params. " + command.toString());
+		getLogger().info("Running command " + CommandsAndParams.COMMAND_START + " with params. " + command.toString());
 		cliRunner(command);
 		
 	}
