@@ -11,7 +11,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.tts:neo-java-web-gradle-plugin:0.1.7"
+    classpath "gradle.plugin.com.tts:neo-java-web-gradle-plugin:0.1.8"
   }
 }
 
@@ -22,7 +22,7 @@ Build script snippet for new, incubating, plugin mechanism introduced in Gradle 
 
 ```
 plugins {
-  id "com.tts.scp-neo-plugin" version "0.1.7"
+  id "com.tts.scp-neo-plugin" version "0.1.8"
 }
 ```
 After that you need to adapt your `build.gradle` file.
