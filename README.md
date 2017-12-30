@@ -11,7 +11,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.tts:neo-java-web-gradle-plugin:0.1.7"
+    classpath "gradle.plugin.com.tts:neo-java-web-gradle-plugin:0.1.8"
   }
 }
 
@@ -22,7 +22,7 @@ Build script snippet for new, incubating, plugin mechanism introduced in Gradle 
 
 ```
 plugins {
-  id "com.tts.scp-neo-plugin" version "0.1.7"
+  id "com.tts.scp-neo-plugin" version "0.1.8"
 }
 ```
 After that you need to adapt your `build.gradle` file. Please be aware that you need the `gradle war plugin` because you only can deploy war files to the Scp Neo Stack
@@ -46,9 +46,10 @@ scpSettings{
 
 ### Explanation of the properties
 
-|Property    | Mandatory     | Default    |Description    |
-|-------------|---------------|----------------|
-|`sdkVersion`|yes|n/a|Specifies the version which should be used. please check [https://tools.hana.ondemand.com](https://tools.hana.ondemand.com) for most recent version|
+
+| Property | Mandatory | Default | Description |
+| --- | --- | --- | --- |
+|`sdkVersion`|yes|no|Specifies the version which should be used. please check [https://tools.hana.ondemand.com](https://tools.hana.ondemand.com) for most recent version
 |`sdkLocation`|yes|${projectDir/.sdk}|The location where the sdk should be installed, can be pointed to an already installed location|
 |`serverLocation`|no|${projectDir/server}|The location where the server for local development should be installed, can be pointed to an already installed location|
 |`account`|for some tasks|no|The sub/account name of the Sap Cloud Platform account|
@@ -59,4 +60,4 @@ scpSettings{
 |`password`|for most tasks|no|your Scp password. **This property should go to your $GRADLE_USER_HOME/gradle.properties file so it doesn't end up on your SCM**|
 |`enviromentVariables`|no|no|A map of enviroment variables you like to pass to the application|
 |`jvmArgs`|no|no|A list of jvm Arguments you like to pass to the application, e.g. "-Dspring.profiles.active=someProfile"|
-|'delta'|no|false|for development only, you deploy in delta mode, can be passed via commandline -PscpSettings.delta=true|
+|`delta`|no|false|for development only, you deploy in delta mode, can be passed via commandline -Pdelta=true|
