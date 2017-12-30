@@ -21,16 +21,5 @@ public class TestTask extends CommonTask {
 		}
 	}
 	
-	public static void main(String[] args) {
-		List<String> list = new ArrayList<>();
-		list.add("test");
-		list.add("a");
-		list.add("bla");
-		System.out.println(list.toString());
-		Predicate<String> p = s -> s == null || s.equals("");
-		
-		boolean a = list.stream().noneMatch(s -> s == null || s.equals(""));
-		System.out.println(a);
-		
-	}
+
 }
