@@ -60,4 +60,4 @@ scpSettings{
 |`password`|for most tasks|no|your Scp password. **This property should go to your $GRADLE_USER_HOME/gradle.properties file so it doesn't end up on your SCM**|
 |`enviromentVariables`|no|no|A map of enviroment variables you like to pass to the application|
 |`jvmArgs`|no|no|A list of jvm Arguments you like to pass to the application, e.g. "-Dspring.profiles.active=someProfile"|
-|`delta`|no|false|for development only, you deploy in delta mode, can be passed via commandline -PscpSettings.delta=true|
+|`delta`|no|false|for development only, you deploy in delta mode, can be passed via commandline -Pdelta=true|
