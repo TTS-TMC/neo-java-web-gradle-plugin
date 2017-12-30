@@ -45,9 +45,19 @@ scpSettings{
 
 ### Explanation of the properties
 
-|Property    | Mandatory     | Description    |
-|-------------|---------------|----------------|
-|`sdkVersion`|yes|The version of the to used Sap Cloud Platform Neo Sdk|
-|`sdkLocation`|yes|The location where the server should be installed|
-|`account`|yes|The account name of the Sap Cloud Platform account|
-|`applicationName`|yes| The application name|
+
+
+| Property | Mandatory | Default | Description |
+| --- | --- | --- | --- |
+|`sdkVersion`|yes|no|Specifies the version which should be used. please check [https://tools.hana.ondemand.com](https://tools.hana.ondemand.com) for most recent version|
+|`sdkLocation`|yes|${projectDir/.sdk}|The location where the sdk should be installed, can be pointed to an already installed location|
+|`serverLocation`|no|${projectDir/server}|The location where the server for local development should be installed, can be pointed to an already installed location|
+|`account`|for some tasks|no|The sub/account name of the Sap Cloud Platform account|
+|`applicationName`|for some tasks|no| The application name, please be aware of naming convention of the Scp(only smal ltters, without spaces, dashes, underscore etc.)|
+|`host`|for some tasks|hana.ondemand.com|The Region host of your Scp account|
+|`sourceFileLocation`|for some tasks|no|the path of the war file, will be defaulted in future versions|
+|`user`|for most tasks|no|your Scp username or mail adress. **This property should go to your $GRADLE_USER_HOME/gradle.properties file so it doesn't end up on your SCM**|
+|`password`|for most tasks|no|your Scp password. **This property should go to your $GRADLE_USER_HOME/gradle.properties file so it doesn't end up on your SCM**|
+|`enviromentVariables`|no|no|A map of enviroment variables you like to pass to the application|
+|`jvmArgs`|no|no|A list of jvm Arguments you like to pass to the application, e.g. "-Dspring.profiles.active=someProfile"|
+|`delta`|no|false|for development only, you deploy in delta mode, can be passed via commandline -PscpSettings.delta=true|
