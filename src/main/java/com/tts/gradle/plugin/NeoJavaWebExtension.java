@@ -18,7 +18,7 @@ public class NeoJavaWebExtension {
 	private String sourceFileLocation;
 	private String account;
 	private String applicationName;
-	private String host;
+	private String host = "hana.ondemand.com";
 	private String user;
 	private String password;
 	private String runtime = "neo-java-web";
@@ -36,13 +36,15 @@ public class NeoJavaWebExtension {
 	 * an error
 	 * 
 	 * @return location of the Sdk
-	 * @throws TaskExecutionException
+	 * @throws Throwable
+	 *             if the location can't be found
 	 */
 	@OutputDirectory
 	public String getSdkLocation() throws Throwable {
-		if (sdkLocation == null || sdkLocation.isEmpty()) {
-			new Throwable("sdkLocation is empty, please check your gradle build file");
-		}
+		sdkLocation = project.findProperty("sdkVersion") == null ? sdkLocation : (String) project.findProperty("sdkVersion");
+			if (sdkLocation == null || sdkLocation.isEmpty()) {
+				new Throwable("sdkLocation is empty, please check your gradle build file");
+			}
 		return sdkLocation;
 	}
 
@@ -51,9 +53,9 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getSdkVersion() throws Throwable {
-		if (sdkVersion == null || sdkVersion.isEmpty()) {
-			throw new Throwable("sdkVersion can't be empty, please check your gradle build file");
-		}
+			if (sdkVersion == null || sdkVersion.isEmpty()) {
+				throw new Throwable("sdkVersion can't be empty, please check your gradle build file");
+			}
 		return sdkVersion;
 	}
 
@@ -63,9 +65,9 @@ public class NeoJavaWebExtension {
 
 	@OutputDirectory
 	public String getServerLocation() throws Throwable {
-		if (serverLocation == null || serverLocation.isEmpty()) {
-			throw new Throwable("serverLocation can't be empty, please check your gradle build file");
-		}
+			if (serverLocation == null || serverLocation.isEmpty()) {
+				throw new Throwable("serverLocation is empty, please check your gradle build file");
+			}
 		return serverLocation;
 	}
 
@@ -74,9 +76,9 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getSourceFileLocation() throws Throwable {
-		if (sourceFileLocation == null || sourceFileLocation.isEmpty()) {
-			throw new Throwable("sourceFileLocation can't be empty, please check your gradle build file");
-		}
+			if (sourceFileLocation == null || sourceFileLocation.isEmpty()) {
+				throw new Throwable("sourceFileLocation can't be empty, please check your gradle build file");
+			}
 		return sourceFileLocation;
 	}
 
@@ -84,27 +86,11 @@ public class NeoJavaWebExtension {
 		this.sourceFileLocation = sourceFileLocation;
 	}
 
-	@Deprecated
-	public void validate(Task task) throws TaskExecutionException {
-		if (sdkVersion == null || sdkVersion.equals("")) {
-			throw new TaskExecutionException(task,
-					new Throwable("Please provide a Sdk Version for Sap Neo Java Web Sdk in your build.gradle"));
-		}
-	}
-
-	@Override
-	public String toString() {
-		return "NeoJavaWebExtension [project=" + project + ", sdkLocation=" + sdkLocation + ", sdkVersion=" + sdkVersion
-				+ ", serverLocation=" + serverLocation + ", sourceFileLocation=" + sourceFileLocation + ", account="
-				+ account + ", applicationName=" + applicationName + ", host=" + host + ", user=" + user
-				+ ", password=*****" + ", runtime=" + runtime + ", runtime_version=" + runtimeVersion
-				+ ", enviromentVariables=" + enviromentVariables + ", jvmArgs=" + jvmArgs + "]";
-	}
-
 	public String getAccount() throws Throwable {
-		if (account == null || account.isEmpty()) {
-			throw new Throwable("account can't be empty, please check your gradle build file");
-		}
+			account = project.findProperty("account") == null ? account : (String) project.findProperty("account");
+			if (account == null || account.isEmpty()) {
+				throw new Throwable("account can't be empty, please check your gradle build file");
+			}
 		return account;
 	}
 
@@ -113,9 +99,9 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getApplicationName() throws Throwable {
-		if (applicationName == null || applicationName.isEmpty()) {
-			throw new Throwable("applicationName can't be empty, please check your gradle build file");
-		}
+			if (applicationName == null || applicationName.isEmpty()) {
+				throw new Throwable("applicationName can't be empty, please check your gradle build file");
+			}
 		return applicationName;
 	}
 
@@ -124,9 +110,10 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getHost() throws Throwable {
-		if (host == null || host.isEmpty()) {
-			throw new Throwable("host can't be empty, please check your gradle build file");
-		}
+			host = project.findProperty("host") == null ? host : (String) project.findProperty("host");
+			if (host == null || host.isEmpty()) {
+				throw new Throwable("host can't be empty, please check your gradle build file");
+			}
 		return host;
 	}
 
@@ -135,12 +122,9 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getUser() throws Throwable {
-		if (user == null) {
-			project.getLogger().info("Searching for user..");
-			user = (String) project.findProperty("user");
-			if (user == null || user.isEmpty()) {
-				throw new Throwable("user can't be empty, please check your gradle build file");
-			}
+		user = project.findProperty("user") == null ? user :(String) project.findProperty("user")  ;
+		if (user == null || user.isEmpty()) {
+			throw new Throwable("user can't be empty, please check your gradle build file");
 		}
 		return user;
 	}
@@ -150,12 +134,9 @@ public class NeoJavaWebExtension {
 	}
 
 	public String getPassword() throws Throwable {
-		if (password == null) {
-			project.getLogger().info("Searching for password..");
-			password = (String) project.findProperty("password");
-			if (password == null || password.isEmpty()) {
-				throw new Throwable("password can't be empty, please check your gradle build file");
-			}
+		password = project.findProperty("password") == null ? password : (String) project.findProperty("password");
+		if (password == null || password.isEmpty()) {
+			throw new Throwable("password can't be empty, please check your gradle build file");
 		}
 		return password;
 	}
@@ -193,6 +174,7 @@ public class NeoJavaWebExtension {
 	}
 
 	public boolean isDelta() {
+		delta = project.findProperty("delta") == null ? false : true;
 		return delta;
 	}
 
