@@ -18,7 +18,7 @@ public class NeoJavaWebExtension {
 	private String sourceFileLocation;
 	private String account;
 	private String applicationName;
-	private String host;
+	private String host = "hana.ondemand.com";
 	private String user;
 	private String password;
 	private String runtime = "neo-java-web";
