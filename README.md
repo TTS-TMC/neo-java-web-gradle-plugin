@@ -63,9 +63,15 @@ scpSettings{
 |`delta`|no|false|for development only, you deploy in delta mode, can be passed via commandline -Pdelta=true|
 
 ### Available tasks
+
 `delpoy` - deploys the war file to the Scp account
+
 `installSdk` - installs the neo sdk with the provided version of your build.gradle file
+
 `installLocal` - installs a local server
+
 `start` - starts the application in the scp account
+
 `stop` - stops the application in the scp account
+
 `restart` - restarts the application in the scp account
