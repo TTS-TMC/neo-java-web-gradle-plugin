@@ -57,11 +57,14 @@ public class CommonTask extends DefaultTask {
 		List<String> commands = new ArrayList<>();
 
 		if (getNeoExecutable().endsWith(".sh")) {
-			commands.add(0, "sh");
+			getLogger().info("adding sh for shell execution");
+			commands.add("sh");
 		}
-		commands.add(1, getNeoExecutable());
+		commands.add(getNeoExecutable());
+		getLogger().info("neo exectuable is set to " + getNeoExecutable());
 		
 		commands.add(command);
+		getLogger().info("adding command " + command);
 		
 		commands.add(CommandsAndParams.PARAM_ACCOUNT);
 		commands.add(getExtension().getAccount());
