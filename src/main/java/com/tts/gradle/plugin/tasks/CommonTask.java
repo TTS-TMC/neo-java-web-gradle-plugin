@@ -57,22 +57,31 @@ public class CommonTask extends DefaultTask {
 		List<String> commands = new ArrayList<>();
 
 		if (getNeoExecutable().endsWith(".sh")) {
-			commands.add(0, "sh");
+			getLogger().info("adding sh for shell execution");
+			commands.add("sh");
 		}
-		commands.add(1, getNeoExecutable());
+		commands.add(getNeoExecutable());
+		getLogger().info("neo exectuable is set to " + getNeoExecutable());
 		
 		commands.add(command);
+		getLogger().info("adding command " + command);
 		
 		commands.add(CommandsAndParams.PARAM_ACCOUNT);
+		getLogger().info("adding account");
 		commands.add(getExtension().getAccount());
+		getLogger().info("adding application");
 		commands.add(CommandsAndParams.PARAM_APPLICATION);
 		commands.add(getExtension().getApplicationName());
+		getLogger().info("adding host");
 		commands.add(CommandsAndParams.PARAM_HOST);
 		commands.add(getExtension().getHost());
+		getLogger().info("adding user");
 		commands.add(CommandsAndParams.PARAM_USER);
 		commands.add(getExtension().getUser());
+		getLogger().info("adding pasword");
 		commands.add(CommandsAndParams.PARAM_PASSWORD);
 		commands.add(getExtension().getPassword());
+		getLogger().info("Leaving default commandline argument builder");
 
 		return commands;
 	}
