@@ -137,18 +137,18 @@ public class CommonTask extends DefaultTask {
 			input.close();
 			line = null;
 			
-			boolean error = false;
 			getLogger().info("Reading Processbuilder ErrorStream");
+			
 			input = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 			while ((line = input.readLine()) != null) {
-				error = true;
 				System.out.println(line);
 			}
 			input.close();
-			if (error) {
+			int exitCode = p.waitFor();
+			if (exitCode != 0) {
 				throw new TaskExecutionException(this, new Throwable("There where some errors, please check the log files"));
 			}
-		} catch (IOException e) {
+		} catch (IOException | InterruptedException e) {
 			throw new TaskExecutionException(this, e);
 		} 
 	}
