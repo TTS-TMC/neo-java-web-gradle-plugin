@@ -50,18 +50,18 @@ public class CommonTask extends DefaultTask {
 	 * @throws Throwable if a mandatory property is missing
 	 */
 	protected List<String> baseCommandlineArguments(String command) throws Throwable {
-		getLogger().info("Validating");
-		isSdkInstalled();
-		
-		getLogger().info("Start building default commandline Arguments..");
-		List<String> commands = new ArrayList<>();
-
-		if (getNeoExecutable().endsWith(".sh")) {
-			getLogger().info("adding sh for shell execution");
-			commands.add("sh");
-		}
-		commands.add(getNeoExecutable());
-		getLogger().info("neo exectuable is set to " + getNeoExecutable());
+//		getLogger().info("Validating");
+//		isSdkInstalled();
+//		
+//		getLogger().info("Start building default commandline Arguments..");
+		List<String> commands = getNeoExecutable();
+//
+//		if (getNeoExecutable().endsWith(".sh")) {
+//			getLogger().info("adding sh for shell execution");
+//			commands.add("sh");
+//		}
+//		commands.add(getNeoExecutable());
+//		getLogger().info("neo exectuable is set to " + getNeoExecutable());
 		
 		commands.add(command);
 		getLogger().info("adding command " + command);
@@ -107,7 +107,7 @@ public class CommonTask extends DefaultTask {
 	}
 
 
-	protected String getNeoExecutable() throws Throwable {
+	protected List<String> getNeoExecutable() throws Throwable {
 		StringBuilder builder = new StringBuilder(getExtension().getSdkLocation());
 		builder.append(File.separator);
 		builder.append("tools");
@@ -120,7 +120,22 @@ public class CommonTask extends DefaultTask {
 		if (!new File(builder.toString()).exists()) {
 			throw new Throwable("neo.sh or neo.bat executable file is missing");
 		}
-		return builder.toString();
+		String neoExecutable =  builder.toString();
+		
+		getLogger().info("Validating");
+		isSdkInstalled();
+		
+		getLogger().info("Start building default commandline Arguments..");
+		List<String> commands = new ArrayList<>();
+
+		if (neoExecutable.endsWith(".sh")) {
+			getLogger().info("adding sh for shell execution");
+			commands.add("sh");
+		}
+		commands.add(neoExecutable);
+		getLogger().info("neo exectuable is set to " + neoExecutable);
+		
+		return commands;
 	}
 
 	protected void cliRunner(List<String> commands) {

@@ -65,6 +65,7 @@ public class NeoJavaWebExtension {
 
 	@OutputDirectory
 	public String getServerLocation() throws Throwable {
+		serverLocation = project.findProperty("serverLocation") == null ? account : (String) project.findProperty("serverLocation");
 			if (serverLocation == null || serverLocation.isEmpty()) {
 				throw new Throwable("serverLocation is empty, please check your gradle build file");
 			}

@@ -19,7 +19,7 @@ public class InstallLocal extends CommonTask {
 
 		getLogger().info("Preparing command " + CommandsAndParams.COMMAND_INSTALL_LOCAL);
 		List<String> command = new ArrayList<>();
-
+		
 		command.add(CommandsAndParams.COMMAND_INSTALL_LOCAL);
 		command.add(CommandsAndParams.PARAM_LOCATION);
 		try {
